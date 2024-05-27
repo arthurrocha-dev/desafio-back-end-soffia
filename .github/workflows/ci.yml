@@ -4,10 +4,7 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-
+      
 jobs:
   build:
 
@@ -75,15 +72,3 @@ jobs:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
         HEROKU_USERNAME: ${{ secrets.HEROKU_USERNAME }}
-
-    # - name: Deploy to server
-    #   if: github.ref == 'refs/heads/main' && success()
-    #   env:
-    #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-    #     SERVER: ${{ secrets.SERVER }}
-    #     USERNAME: ${{ secrets.USERNAME }}
-    #   run: |
-    #     mkdir -p ~/.ssh
-    #     echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
-    #     chmod 600 ~/.ssh/id_rsa
-    #     ssh -o StrictHostKeyChecking=no ${USERNAME}@${SERVER} 'cd /path/to/your/app && git pull && composer install --no-dev && php artisan migrate --force'
