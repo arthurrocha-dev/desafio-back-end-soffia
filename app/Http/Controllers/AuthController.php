@@ -10,7 +10,7 @@ class AuthController extends Controller
 {
     /**
      * @OA\Post(
-     *     path="api/login",
+     *     path="/api/login",
      *     summary="Login a user",
      *     description="Authenticate a user and return a token",
      *     operationId="loginUser",
