@@ -52,7 +52,10 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            return response()->json([
+                'message',
+                'errors' => ['name', 'email', 'password'],
+            ], 400);
         }
 
         $user = User::create([
