@@ -1,0 +1,86 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        env:
+          MYSQL_ROOT_PASSWORD: root
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+
+    - name: Install dependencies
+      run: composer install --no-progress --no-suggest --prefer-dist
+
+    - name: Copy .env file
+      run: cp .env.example .env
+
+    - name: Generate application key
+      run: php artisan key:generate
+
+    - name: Run migrations
+      run: php artisan migrate
+
+    - name: Run tests
+      run: php artisan test
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Login to Heroku Container Registry
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      run: |
+        echo "$HEROKU_API_KEY" | docker login --username=$HEROKU_USERNAME --password-stdin registry.heroku.com
+
+    - name: Build, Push and Release to Heroku
+      run: |
+        heroku container:push web --app $HEROKU_APP_NAME
+        heroku container:release web --app $HEROKU_APP_NAME
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+        HEROKU_USERNAME: ${{ secrets.HEROKU_USERNAME }}
+
+    # - name: Deploy to server
+    #   if: github.ref == 'refs/heads/main' && success()
+    #   env:
+    #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    #     SERVER: ${{ secrets.SERVER }}
+    #     USERNAME: ${{ secrets.USERNAME }}
+    #   run: |
+    #     mkdir -p ~/.ssh
+    #     echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+    #     chmod 600 ~/.ssh/id_rsa
+    #     ssh -o StrictHostKeyChecking=no ${USERNAME}@${SERVER} 'cd /path/to/your/app && git pull && composer install --no-dev && php artisan migrate --force'
