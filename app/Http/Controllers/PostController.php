@@ -81,7 +81,7 @@ class PostController extends Controller
      *     )
      * )
     */
-    public function searchById($id)
+    public function show($id)
     {
         $post = Post::with('user', 'tags')->findOrFail($id);
         return new PostResource($post);
