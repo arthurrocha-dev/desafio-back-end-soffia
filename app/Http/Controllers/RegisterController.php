@@ -11,7 +11,7 @@ class RegisterController extends Controller
 {
     /**
      * @OA\Post(
-     *     path="api/register",
+     *     path="/api/register",
      *     summary="Register a new user",
      *     description="Registers a new user with the provided details",
      *     operationId="registerUser",
@@ -38,6 +38,7 @@ class RegisterController extends Controller
      *         response=400,
      *         description="Validation error",
      *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Validation failed"),
      *             @OA\Property(property="errors", type="object")
      *         )
      *     )
@@ -52,7 +53,10 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 400);
         }
 
         $user = User::create([
