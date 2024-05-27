@@ -79,6 +79,10 @@ php artisan l5-swagger:generate
 php artisan serve
 ```
 
+## CI/CD
+Este projeto utiliza do gitHub Action, para realizar a Integração e Deploy automáticos no heroku.
+para fazer isso, basta relizar um push para a branch main.
+
 ## Acessar a API
 
 Pra a realização do de teste manuais na API, você pode utilizar um "Client API", como o [Insominia](https://insomnia.rest/download), ou pode acessar adocumentação da API no Swagger. Para isso basta, estando com o servidor em estado de execução, acessar em seu navegador a URL http://127.0.0.1:8000/api/documentation
