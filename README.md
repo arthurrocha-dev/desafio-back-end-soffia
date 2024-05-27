@@ -18,7 +18,7 @@
 
 ## Pré-resquisitos
 [PHP](https://www.php.net/docs.php) >= 8.1.2<br>
-[Composes](https://getcomposer.org/) >= 2.7.2<br>
+[Composer](https://getcomposer.org/) >= 2.7.2<br>
 [MySql](https://www.mysql.com/) >= 8.0<br>
 
 ## Instalação do projeto
@@ -26,14 +26,14 @@
 ### **1** - Clonagem do repositório
 
 ```bash
-$ git clone https://github.com/arthurrocha-dev/pa-desafio-back-end.git
+git clone https://github.com/arthurrocha-dev/pa-desafio-back-end.git
 ```
 
 ### **2** - Criar as variâveis ambiente
 Na pasta do projeto execute o seguinte comando.
 
 ```bash
-$ cp .env.example .env
+cp .env.example .env
 ```
 
 Em seguida, no arquivo .env configure as variâveis de ambiente de acordo com asuas informações, conforme o exemplo abaixo.
@@ -55,19 +55,19 @@ Em seguida, no arquivo .env configure as variâveis de ambiente de acordo com as
 ### **3** - Download das dependencias
 
 ```bash
-$ composer install
+composer install
 ```
 
 ### **3** - Gerar chave da aplicação
 
 ```bash
-$ php artisan key:generate
+php artisan key:generate
 ```
 
 ### **4** - Execução das "migrations"
 
 ```bash
-$ php artisan migrate
+php artisan migrate
 ```
 ### **5** - Geração da Documetação Swagger
 ```bash
@@ -76,7 +76,7 @@ php artisan l5-swagger:generate
 
 ### **5** - Inicialização do servidor em ambinte local
 ```bash
-php artisan server 
+php artisan serve
 ```
 
 ## Acessar a API
