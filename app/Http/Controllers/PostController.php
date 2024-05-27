@@ -91,7 +91,7 @@ class PostController extends Controller
      * @OA\Post(
      *     path="api/posts",
      *     summary="Create a new post",
-     *     description="Create a new post with the provided details",
+     *     description="Create a new post with the provided details. If tags do not exist, they will be created.",
      *     operationId="createPost",
      *     tags={"Posts"},
      *     @OA\RequestBody(
@@ -99,7 +99,7 @@ class PostController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="title", type="string", example="My Post Title"),
      *             @OA\Property(property="content", type="string", example="Content of the post"),
-     *             @OA\Property(property="tags", type="array", @OA\Items(type="integer", example=1))
+     *             @OA\Property(property="tags", type="array", @OA\Items(type="string", example="PHP"))
      *         )
      *     ),
      *     @OA\Response(
@@ -119,19 +119,24 @@ class PostController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'tags' => 'array',
-            'tags.*' => 'exists:tags,id',
+            'tags.*' => 'string|max:255',
         ]);
-
+    
         $post = new Post();
         $post->title = $request->title;
         $post->content = $request->content;
         $post->user_id = auth()->id();
         $post->save();
-
+    
         if ($request->has('tags')) {
-            $post->tags()->attach($request->tags);
+            $tagIds = [];
+            foreach ($request->tags as $tagName) {
+                $tag = Tag::firstOrCreate(['name' => $tagName]);
+                $tagIds[] = $tag->id;
+            }
+            $post->tags()->attach($tagIds);
         }
-
+    
         return response()->json($post, 201);
     }
 
@@ -139,7 +144,7 @@ class PostController extends Controller
      * @OA\Put(
      *     path="api/posts/{id}",
      *     summary="Update a post",
-     *     description="Update the details of an existing post",
+     *     description="Update the details of an existing post. If tags do not exist, they will be created.",
      *     operationId="updatePost",
      *     tags={"Posts"},
      *     @OA\Parameter(
@@ -156,7 +161,7 @@ class PostController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="title", type="string", example="Updated Post Title"),
      *             @OA\Property(property="content", type="string", example="Updated content of the post"),
-     *             @OA\Property(property="tags", type="array", @OA\Items(type="integer", example=1)),
+     *             @OA\Property(property="tags", type="array", @OA\Items(type="string", example="new_tag")),
      *             @OA\Property(property="author", type="string", example="Author Name")
      *         )
      *     ),
@@ -166,12 +171,12 @@ class PostController extends Controller
      *         @OA\JsonContent(ref="#/components/schemas/Post")
      *     ),
      *     @OA\Response(
-     *         response=404,
-     *         description="Post not found"
-     *     ),
-     *     @OA\Response(
      *         response=400,
      *         description="Validation error"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Post not found"
      *     )
      * )
     */
@@ -183,7 +188,7 @@ class PostController extends Controller
             'title' => 'sometimes|string|max:255',
             'content' => 'sometimes|string',
             'tags' => 'sometimes|array',
-            'tags.*' => 'exists:tags,id',
+            'tags.*' => 'string|max:255',
             'author' => 'sometimes|string|exists:users,name'
         ]);
 
@@ -194,7 +199,12 @@ class PostController extends Controller
             $post->content = $request->content;
         }
         if ($request->has('tags')) {
-            $post->tags()->sync($request->tags);
+            $tagIds = [];
+            foreach ($request->tags as $tagName) {
+                $tag = Tag::firstOrCreate(['name' => $tagName]);
+                $tagIds[] = $tag->id;
+            }
+            $post->tags()->sync($tagIds);
         }
         if ($request->has('author')) {
             $author = User::where('name', $request->author)->first();
