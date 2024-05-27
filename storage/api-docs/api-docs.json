@@ -14,7 +14,7 @@
         "version": "1.0.0"
     },
     "paths": {
-        "api/login": {
+        "/api/login": {
             "post": {
                 "tags": [
                     "Auth"
@@ -84,7 +84,7 @@
                 }
             }
         },
-        "api/posts": {
+        "/api/posts": {
             "get": {
                 "tags": [
                     "Posts"
@@ -124,7 +124,7 @@
                     "Posts"
                 ],
                 "summary": "Create a new post",
-                "description": "Create a new post with the provided details",
+                "description": "Create a new post with the provided details. If tags do not exist, they will be created.",
                 "operationId": "createPost",
                 "requestBody": {
                     "required": true,
@@ -143,8 +143,8 @@
                                     "tags": {
                                         "type": "array",
                                         "items": {
-                                            "type": "integer",
-                                            "example": 1
+                                            "type": "string",
+                                            "example": "PHP"
                                         }
                                     }
                                 },
@@ -167,10 +167,15 @@
                     "400": {
                         "description": "Validation error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
             }
         },
-        "api/posts/{id}": {
+        "/api/posts/{id}": {
             "get": {
                 "tags": [
                     "Posts"
@@ -210,7 +215,7 @@
                     "Posts"
                 ],
                 "summary": "Update a post",
-                "description": "Update the details of an existing post",
+                "description": "Update the details of an existing post. If tags do not exist, they will be created.",
                 "operationId": "updatePost",
                 "parameters": [
                     {
@@ -240,8 +245,8 @@
                                     "tags": {
                                         "type": "array",
                                         "items": {
-                                            "type": "integer",
-                                            "example": 1
+                                            "type": "string",
+                                            "example": "new_tag"
                                         }
                                     },
                                     "author": {
@@ -265,13 +270,18 @@
                             }
                         }
                     },
-                    "404": {
-                        "description": "Post not found"
-                    },
                     "400": {
                         "description": "Validation error"
+                    },
+                    "404": {
+                        "description": "Post not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -298,7 +308,12 @@
                     "404": {
                         "description": "Post not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
             }
         },
         "api/register": {
@@ -384,7 +399,7 @@
                 }
             }
         },
-        "api/tags": {
+        "/api/tags": {
             "get": {
                 "tags": [
                     "Tags"
@@ -448,7 +463,7 @@
                 }
             }
         },
-        "api/tags/{id}": {
+        "/api/tags/{id}": {
             "get": {
                 "tags": [
                     "Tags"
@@ -664,6 +679,29 @@
                 },
                 "type": "object"
             }
+        },
+        "securitySchemes": {
+            "passport": {
+                "type": "oauth2",
+                "description": "Laravel Passport OAuth2 security scheme",
+                "in": "header",
+                "flows": {
+                    "authorizationCode": {
+                        "authorizationUrl": "http://localhost/oauth/authorize",
+                        "tokenUrl": "http://localhost/oauth/token",
+                        "refreshUrl": "http://localhost/oauth/token",
+                        "scopes": {
+                            "read-posts": "Read posts",
+                            "write-posts": "Write posts"
+                        }
+                    }
+                }
+            }
         }
-    }
+    },
+    "security": [
+        {
+            "passport": []
+        }
+    ]
 }
