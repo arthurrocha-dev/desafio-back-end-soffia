@@ -11,7 +11,7 @@ class TagController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/tags",
+     *     path="api/tags",
      *     summary="Get list of tags",
      *     description="Get a list of all tags",
      *     operationId="getTags",
@@ -34,7 +34,7 @@ class TagController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/tags",
+     *     path="api/tags",
      *     summary="Create a new tag",
      *     description="Create a new tag with the provided details",
      *     operationId="createTag",
@@ -75,7 +75,7 @@ class TagController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/tags/{id}",
+     *     path="api/tags/{id}",
      *     summary="Get tag by ID",
      *     description="Get a single tag by its ID",
      *     operationId="getTagById",
@@ -107,7 +107,7 @@ class TagController extends Controller
     }
 /**
      * @OA\Put(
-     *     path="/tags/{id}",
+     *     path="api/tags/{id}",
      *     summary="Update a tag",
      *     description="Update the details of an existing tag",
      *     operationId="updateTag",
@@ -162,7 +162,7 @@ class TagController extends Controller
     
     /**
      * @OA\Delete(
-     *     path="/tags/{id}",
+     *     path="api/tags/{id}",
      *     summary="Delete a tag",
      *     description="Delete an existing tag by its ID",
      *     operationId="deleteTag",

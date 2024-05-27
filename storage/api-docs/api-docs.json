@@ -14,7 +14,77 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/posts": {
+        "api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login a user",
+                "description": "Authenticate a user and return a token",
+                "operationId": "loginUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "token_generated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid login details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid login details"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "api/posts": {
             "get": {
                 "tags": [
                     "Posts"
@@ -100,7 +170,7 @@
                 }
             }
         },
-        "/posts/{id}": {
+        "api/posts/{id}": {
             "get": {
                 "tags": [
                     "Posts"
@@ -231,7 +301,7 @@
                 }
             }
         },
-        "/register": {
+        "api/register": {
             "post": {
                 "tags": [
                     "User"
@@ -314,7 +384,7 @@
                 }
             }
         },
-        "/tags": {
+        "api/tags": {
             "get": {
                 "tags": [
                     "Tags"
@@ -378,7 +448,7 @@
                 }
             }
         },
-        "/tags/{id}": {
+        "api/tags/{id}": {
             "get": {
                 "tags": [
                     "Tags"

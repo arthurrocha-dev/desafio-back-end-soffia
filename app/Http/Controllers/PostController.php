@@ -13,7 +13,7 @@ class PostController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/posts",
+     *     path="api/posts",
      *     summary="Get list of posts",
      *     description="Get a list of posts, optionally filtered by tag",
      *     operationId="getPosts",
@@ -56,7 +56,7 @@ class PostController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/posts/{id}",
+     *     path="api/posts/{id}",
      *     summary="Get post by ID",
      *     description="Get a single post by its ID",
      *     operationId="getPostById",
@@ -89,7 +89,7 @@ class PostController extends Controller
     
     /**
      * @OA\Post(
-     *     path="/posts",
+     *     path="api/posts",
      *     summary="Create a new post",
      *     description="Create a new post with the provided details",
      *     operationId="createPost",
@@ -137,7 +137,7 @@ class PostController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/posts/{id}",
+     *     path="api/posts/{id}",
      *     summary="Update a post",
      *     description="Update the details of an existing post",
      *     operationId="updatePost",
@@ -209,7 +209,7 @@ class PostController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/posts/{id}",
+     *     path="api/posts/{id}",
      *     summary="Delete a post",
      *     description="Delete an existing post by its ID",
      *     operationId="deletePost",
