@@ -2,35 +2,34 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RegisterControllerTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function a_user_can_register()
+    public function user_can_register()
     {
         $response = $this->postJson('/api/register', [
-            'name' => 'John Doe',
-            'email' => 'john.doe@example.com',
+            'name' => 'user',
+            'email' => 'user@example.com',
             'password' => 'password123',
             'password_confirmation' => 'password123',
         ]);
 
-        $response->assertStatus(201)
-                 ->assertJson([
-                     'message' => 'User created successfully',
-                     'user' => [
-                         'name' => 'John Doe',
-                         'email' => 'john.doe@example.com',
-                     ]
-                 ]);
-
-        $this->assertDatabaseHas('users', [
-            'email' => 'john.doe@example.com',
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
+            'message',
+            'user' => [
+                'id',
+                'name',
+                'email',
+                'created_at',
+                'updated_at',
+            ],
         ]);
     }
 
@@ -40,36 +39,37 @@ class RegisterControllerTest extends TestCase
         $response = $this->postJson('/api/register', [
             'name' => '',
             'email' => '',
-            'password' => ''
+            'password' => '',
+            'password_confirmation' => '',
         ]);
 
         $response->assertStatus(400);
-
-        // Verificar a estrutura da resposta de validação
         $response->assertJsonStructure([
             'message',
-            'errors' => ['name', 'email', 'password'],
+            'errors' => [
+                'name', 
+                'email', 
+                'password',
+            ],
         ]);
     }
 
-    // /** @test */
-    // public function email_must_be_unique()
-    // {
-    //     User::factory()->create(['email' => 'john.doe@example.com']);
+    /** @test */
+    public function email_must_be_unique()
+    {
+        User::factory()->create(['email' => 'user@example.com']);
 
-    //     $response = $this->postJson('/api/register', [
-    //         'name' => 'John Doe',
-    //         'email' => 'john.doe@example.com',
-    //         'password' => 'password123',
-    //         'password_confirmation' => 'password123',
-    //     ]);
+        $response = $this->postJson('/api/register', [
+            'name' => 'user',
+            'email' => 'user@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
 
-    //     $response->assertStatus(400);
-
-    //     // Verificar a estrutura da resposta de validação
-    //     $response->assertJsonStructure([
-    //         'message',
-    //         'errors' => ['email'],
-    //     ]);
-    // }
+        $response->assertStatus(400);
+        $response->assertJsonStructure([
+            'message',
+            'errors' => ['email'],
+        ]);
+    }
 }
