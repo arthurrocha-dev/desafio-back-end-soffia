@@ -10,6 +10,33 @@ use App\Http\Resources\PostResource;
 
 class PostController extends Controller
 {
+
+    /**
+     * @OA\Get(
+     *     path="/posts",
+     *     summary="Get list of posts",
+     *     description="Get a list of posts, optionally filtered by tag",
+     *     operationId="getPosts",
+     *     tags={"Posts"},
+     *     @OA\Parameter(
+     *         name="tag",
+     *         in="query",
+     *         description="Tag to filter posts by",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of posts",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Post")
+     *         )
+     *     )
+     * )
+    */
     public function index(Request $request)
     {
         if ($request->has('tag')) {
@@ -27,12 +54,65 @@ class PostController extends Controller
         return PostResource::collection($posts);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/posts/{id}",
+     *     summary="Get post by ID",
+     *     description="Get a single post by its ID",
+     *     operationId="getPostById",
+     *     tags={"Posts"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the post to retrieve",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Post details",
+     *         @OA\JsonContent(ref="#/components/schemas/Post")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Post not found"
+     *     )
+     * )
+    */
     public function searchById($id)
     {
         $post = Post::with('user', 'tags')->findOrFail($id);
         return new PostResource($post);
     }
-
+    
+    /**
+     * @OA\Post(
+     *     path="/posts",
+     *     summary="Create a new post",
+     *     description="Create a new post with the provided details",
+     *     operationId="createPost",
+     *     tags={"Posts"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="title", type="string", example="My Post Title"),
+     *             @OA\Property(property="content", type="string", example="Content of the post"),
+     *             @OA\Property(property="tags", type="array", @OA\Items(type="integer", example=1))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Post created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Post")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error"
+     *     )
+     * )
+    */
     public function store(Request $request)
     {
         $request->validate([
@@ -55,6 +135,46 @@ class PostController extends Controller
         return response()->json($post, 201);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/posts/{id}",
+     *     summary="Update a post",
+     *     description="Update the details of an existing post",
+     *     operationId="updatePost",
+     *     tags={"Posts"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the post to update",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=false,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="title", type="string", example="Updated Post Title"),
+     *             @OA\Property(property="content", type="string", example="Updated content of the post"),
+     *             @OA\Property(property="tags", type="array", @OA\Items(type="integer", example=1)),
+     *             @OA\Property(property="author", type="string", example="Author Name")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Post updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Post")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Post not found"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error"
+     *     )
+     * )
+    */
     public function update(Request $request, $id)
     {
         $post = Post::findOrFail($id);
@@ -87,6 +207,32 @@ class PostController extends Controller
         return new PostResource($post);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/posts/{id}",
+     *     summary="Delete a post",
+     *     description="Delete an existing post by its ID",
+     *     operationId="deletePost",
+     *     tags={"Posts"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the post to delete",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Post deleted successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Post not found"
+     *     )
+     * )
+    */
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
