@@ -43,16 +43,16 @@ jobs:
         echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
         echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
 
-    - name: Clear and cache configuration
-      run: |
-        php artisan config:clear
-        php artisan config:cache
-
     - name: Update composer 
       run: composer update
 
     - name: Install dependencies
       run: composer install
+    
+    - name: Clear and cache configuration
+      run: |
+        php artisan config:clear
+        php artisan config:cache
 
     - name: Generate application key
       run: php artisan key:generate
