@@ -67,6 +67,9 @@ jobs:
     - name: Run migration
       run: php artisan migrate --force
 
+    - name: Run tests
+      run: php artisan test
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -75,18 +78,20 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Setup Heroku
+    - name: Setup Heroku CLI
       run: curl https://cli-assets.heroku.com/install.sh | sh
 
     - name: Authenticate with Heroku
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: heroku auth:token | heroku auth:whoami
+      run: |
+        echo "$HEROKU_API_KEY" | heroku auth:token
+
+    - name: Add Heroku remote
+      run: heroku git:remote -a ${{ secrets.HEROKU_APP_NAME }}
 
     - name: Deploy to Heroku
+      run: git push heroku main
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
-      run: |
-        heroku git:remote -a $HEROKU_APP_NAME
-        git push heroku main
