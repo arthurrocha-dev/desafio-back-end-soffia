@@ -7,7 +7,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     services:
@@ -35,8 +34,8 @@ jobs:
     - name: Update composer 
       run: composer update
 
-    # - name: Install dependencies
-    #   run: composer install
+    - name: Install dependencies
+      run: composer install
 
     - name: Copy .env file
       run: cp .env.example .env

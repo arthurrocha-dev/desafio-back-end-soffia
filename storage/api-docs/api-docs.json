@@ -84,7 +84,7 @@
                 }
             }
         },
-        "/api/posts": {
+        "api/posts": {
             "get": {
                 "tags": [
                     "Posts"
@@ -167,15 +167,10 @@
                     "400": {
                         "description": "Validation error"
                     }
-                },
-                "security": [
-                    {
-                        "passport": []
-                    }
-                ]
+                }
             }
         },
-        "/api/posts/{id}": {
+        "api/posts/{id}": {
             "get": {
                 "tags": [
                     "Posts"
@@ -276,12 +271,7 @@
                     "404": {
                         "description": "Post not found"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             },
             "delete": {
                 "tags": [
@@ -308,15 +298,10 @@
                     "404": {
                         "description": "Post not found"
                     }
-                },
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ]
+                }
             }
         },
-        "api/register": {
+        "/api/register": {
             "post": {
                 "tags": [
                     "User"
@@ -387,6 +372,10 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation failed"
+                                        },
                                         "errors": {
                                             "type": "object"
                                         }
@@ -679,29 +668,6 @@
                 },
                 "type": "object"
             }
-        },
-        "securitySchemes": {
-            "passport": {
-                "type": "oauth2",
-                "description": "Laravel Passport OAuth2 security scheme",
-                "in": "header",
-                "flows": {
-                    "authorizationCode": {
-                        "authorizationUrl": "http://localhost/oauth/authorize",
-                        "tokenUrl": "http://localhost/oauth/token",
-                        "refreshUrl": "http://localhost/oauth/token",
-                        "scopes": {
-                            "read-posts": "Read posts",
-                            "write-posts": "Write posts"
-                        }
-                    }
-                }
-            }
         }
-    },
-    "security": [
-        {
-            "passport": []
-        }
-    ]
+    }
 }
