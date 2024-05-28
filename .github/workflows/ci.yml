@@ -43,9 +43,6 @@ jobs:
         echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
         echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
 
-    - name: Generate application key
-      run: php artisan key:generate
-
     - name: Clear and cache configuration
       run: |
         php artisan config:clear
@@ -57,9 +54,12 @@ jobs:
     - name: Install dependencies
       run: composer install
 
+    - name: Generate application key
+      run: php artisan key:generate
+
     - name: Run migration
       run: php artisan migrate --force
-      
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
