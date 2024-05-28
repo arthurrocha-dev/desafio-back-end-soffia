@@ -1,4 +1,3 @@
-
 <div style="background-color: #F8F8FF; color: rgb(28 31 36); padding: 15px; border-radius: 15px;">
   <div style="padding: 15px; text-align: center; border-bottom: 1px solid #A9A9A9">
     <p>
@@ -8,86 +7,76 @@
     </p>
   </div>
 
-  <section style= "text-align: center;">
+  <section style="text-align: center;">
     <h2>Sobre</h2>
-    <p>Esta API REST Foi desenvolvida, como resposta ao desafio proposto pela <a href="https://www.soffia.co/">Soffia</a>. Onde sua principal função é gerenciar o fluxo de postagens, cada postagem deve conter um título, um autor, o conteúdo da postagens e uma ou mais tags.</p>
-    </ul>
+    <p>Esta API REST foi desenvolvida como resposta ao desafio proposto pela <a href="https://www.soffia.co/">Soffia</a>. Sua principal função é gerenciar o fluxo de postagens. Cada postagem deve conter um título, um autor, o conteúdo da postagem e uma ou mais tags.</p>
   </section>
 </div>
 
-
-## Pré-resquisitos
+## Pré-requisitos
 [PHP](https://www.php.net/docs.php) >= 8.1.2<br>
 [Composer](https://getcomposer.org/) >= 2.7.2<br>
-[MySql](https://www.mysql.com/) >= 8.0<br>
+[MySQL](https://www.mysql.com/) >= 8.0<br>
 
 ## Instalação do projeto
 
 ### **1** - Clonagem do repositório
-
 ```bash
 git clone https://github.com/arthurrocha-dev/pa-desafio-back-end.git
 ```
 
-### **2** - Criar as variâveis ambiente
-Na pasta do projeto execute o seguinte comando.
-
+### **2** - Criar as variáveis de ambiente
 ```bash
 cp .env.example .env
 ```
 
-Em seguida, no arquivo .env configure as variâveis de ambiente de acordo com asuas informações, conforme o exemplo abaixo.
+Em seguida, no arquivo .env, configure as variáveis de ambiente de acordo com suas informações, conforme o exemplo abaixo:
 
-```env
-  APP_NAME=Laravel
-  APP_ENV=local
-  APP_KEY=
-  APP_DEBUG=true
-  APP_URL=http://localhost
+```bash
+APP_NAME=Laravel
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+APP_URL=http://localhost
 
-  DB_CONNECTION=mysql
-  DB_HOST=127.0.0.1
-  DB_PORT=3306
-  DB_DATABASE=laravel
-  DB_USERNAME=root
-  DB_PASSWORD=
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=
 ```
-### **3** - Download das dependencias
 
+### **3** - Download das dependências
 ```bash
 composer install
 ```
 
-### **3** - Gerar chave da aplicação
-
+### **4** - Gerar chave da aplicação
 ```bash
 php artisan key:generate
 ```
 
-### **4** - Execução das "migrations"
-
+### **5** -  Execução das "migrations"
 ```bash
 php artisan migrate
 ```
-### **5** - Geração da Documetação Swagger
+
+### **6** - Geração da documentação Swagger
 ```bash
-php artisan l5-swagger:generate 
+php artisan l5-swagger:generate
 ```
 
-### **5** - Inicialização do servidor em ambinte local
+### *7** - Inicialização do servidor em ambiente local
 ```bash
 php artisan serve
 ```
 
 ## CI/CD
-Este projeto utiliza do gitHub Action, para realizar a Integração e Deploy automáticos no heroku.
-para fazer isso, basta relizar um push para a branch main.
+Este projeto utiliza o GitHub Actions para realizar a integração e deploy automáticos no Heroku. Para fazer isso, basta realizar um push para a branch main.
 
-## Acessar a API
-
-Pra a realização do de teste manuais na API, você pode utilizar um "Client API", como o [Insominia](https://insomnia.rest/download), ou pode acessar adocumentação da API no Swagger. Para isso basta, estando com o servidor em estado de execução, acessar em seu navegador a URL http://127.0.0.1:8000/api/documentation
+## Acesso a documentação da API
+Para realizar testes manuais na API, você pode utilizar um "Client API" como o Insomnia ou acessar a documentação da API no Swagger. Para isso, estando com o servidor em execução, acesse em seu navegador a URL http://127.0.0.1:8000/api/documentation.
 
 ## Autor
-
-| [<img src="https://avatars.githubusercontent.com/u/94405748?s=400&u=e322404a295ecdf9311fec369f6b97964a6c7527&v=4" width="150"><br><sub>@arthurrocha-dev</sub>](https://github.com/arthurrocha-dev) |
-| :---: |
+<img src="https://avatars.githubusercontent.com/u/94405748?s=400&u=e322404a295ecdf9311fec369f6b97964a6c7527&v=4" width="150"><br><sub>@arthurrocha-dev</sub>
