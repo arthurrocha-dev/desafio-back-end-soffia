@@ -8,6 +8,7 @@ return [
 
     'allowed_origins' => [
         'http://desafio-soffia-backend.arthurrocha.dev.br',
+        'http://desafio-soffia-backend.arthurrocha.dev.br/api/documentation',
         'http://localhost',
         'http:127.0.0.1',
     ],
