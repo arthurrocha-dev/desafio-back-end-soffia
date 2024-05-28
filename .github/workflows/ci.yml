@@ -35,27 +35,34 @@ jobs:
       run: cp .env.example .env
 
     - name: Set environment variables
+      env:
+        DB_CONNECTION: ${{ secrets.DB_CONNECTION }}
+        DB_HOST: ${{ secrets.DB_HOST }}
+        DB_PORT: ${{ secrets.DB_PORT }}
+        DB_DATABASE: ${{ secrets.DB_DATABASE }}
+        DB_USERNAME: ${{ secrets.DB_USERNAME }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       run: |
-        echo "DB_CONNECTION=${{ secrets.DB_CONNECTION }}" >> .env
-        echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-        echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
-        echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
-        echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+        echo "DB_CONNECTION=${DB_CONNECTION}" >> .env
+        echo "DB_HOST=${DB_HOST}" >> .env
+        echo "DB_PORT=${DB_PORT}" >> .env
+        echo "DB_DATABASE=${DB_DATABASE}" >> .env
+        echo "DB_USERNAME=${DB_USERNAME}" >> .env
+        echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
 
-    - name: Update composer 
+    - name: Update composer
       run: composer update
 
     - name: Install dependencies
       run: composer install
-    
+
+    - name: Generate application key
+      run: php artisan key:generate
+
     - name: Clear and cache configuration
       run: |
         php artisan config:clear
         php artisan config:cache
-
-    - name: Generate application key
-      run: php artisan key:generate
 
     - name: Run migration
       run: php artisan migrate --force
@@ -71,9 +78,15 @@ jobs:
     - name: Setup Heroku
       run: curl https://cli-assets.heroku.com/install.sh | sh
 
+    - name: Authenticate with Heroku
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      run: echo $HEROKU_API_KEY | heroku auth:token
+
     - name: Deploy to Heroku
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
       run: |
         git remote add heroku https://git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
         git push heroku main
