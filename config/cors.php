@@ -11,7 +11,6 @@ return [
         'http://desafio-soffia-backend.arthurrocha.dev.br/api/documentation',
         'http://localhost',
         'http:127.0.0.1',
-        '*'
     ],
 
     'allowed_origins_patterns' => [],
