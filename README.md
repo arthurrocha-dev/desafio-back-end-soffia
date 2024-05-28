@@ -76,7 +76,7 @@ php artisan serve
 Este projeto utiliza o GitHub Actions para realizar a integração e deploy automáticos no Heroku. Para fazer isso, basta realizar um push para a branch main.
 
 ## Acesso a documentação da API
-Para realizar testes manuais na API, você pode utilizar um "Client API" como o Insomnia ou acessar a documentação da API no Swagger. Para isso, estando com o servidor em execução, acesse em seu navegador a URL http://127.0.0.1:8000/api/documentation.
+Para realizar testes manuais na API, você pode utilizar um "Client API" como o Insomnia ou acessar a documentação da API no Swagger. Para isso, estando com o servidor em execução, acesse em seu navegador a URL desafio-soffia-backend.arthurrocha.dev.br/api/documentation.
 
 ## Autor
 <img src="https://avatars.githubusercontent.com/u/94405748?s=400&u=e322404a295ecdf9311fec369f6b97964a6c7527&v=4" width="150"><br><sub>@arthurrocha-dev</sub>
