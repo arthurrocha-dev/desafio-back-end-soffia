@@ -5,6 +5,7 @@ services:
     image: mysql:8.0
     container_name: dt_teste_soffia
     environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: dt_teste_soffia
       MYSQL_USER: soffia
       MYSQL_PASSWORD: password
