@@ -17,6 +17,7 @@
 [PHP](https://www.php.net/docs.php) >= 8.1.2<br>
 [Composer](https://getcomposer.org/) >= 2.7.2<br>
 [MySQL](https://www.mysql.com/) >= 8.0<br>
+[Docker](https://www.docker.com/products/docker-desktop/) >= 25.0.3
 
 ## Instalação do projeto
 
@@ -47,27 +48,32 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-### **3** - Download das dependências
+### **3** Inicialização do banco de dados no docker
+```bash
+docker-compose up -d --build
+```
+
+### **4** - Download das dependências
 ```bash
 composer install
 ```
 
-### **4** - Gerar chave da aplicação
+### **5** - Gerar chave da aplicação
 ```bash
 php artisan key:generate
 ```
 
-### **5** -  Execução das "migrations"
+### **6** -  Execução das "migrations"
 ```bash
 php artisan migrate
 ```
 
-### **6** - Geração da documentação Swagger
+### **7** - Geração da documentação Swagger
 ```bash
 php artisan l5-swagger:generate
 ```
 
-### *7** - Inicialização do servidor em ambiente local
+### **8** - Inicialização do servidor em ambiente local
 ```bash
 php artisan serve
 ```
