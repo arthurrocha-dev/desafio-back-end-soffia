@@ -38,14 +38,15 @@ jobs:
           coverage: none
 
       - name: Install Composer dependencies
-        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
 
-      - name: Copy .env
+      - name: Prepare environment file
         run: |
           cp .env.example .env
-
-      - name: Set environment variables
-        run: |
+          echo "APP_ENV=production" >> .env
+          echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env
+          echo "APP_DEBUG=false" >> .env
+          echo "APP_URL=https://your-app.herokuapp.com" >> .env
           echo "DB_CONNECTION=${{ secrets.DB_CONNECTION }}" >> .env
           echo "DB_HOST=127.0.0.1" >> .env
           echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
@@ -54,7 +55,7 @@ jobs:
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
 
       - name: Generate application key
-        run: php artisan key:generate
+        run: php artisan key:generate --ansi
 
       - name: Run migrations
         run: php artisan migrate --force
