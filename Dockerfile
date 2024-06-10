@@ -1,10 +1,10 @@
-# Use the official PHP image as a base
+# Use a imagem oficial do PHP como base
 FROM php:8.1-fpm
 
-# Set working directory
+# Defina o diretório de trabalho
 WORKDIR /var/www
 
-# Install dependencies
+# Instale dependências do sistema
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -17,21 +17,18 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) pdo_mysql mbstring exif pcntl bcmath gd zip
 
-# Clear cache
+# Limpe o cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Composer
+# Instale o Composer
 COPY --from=composer:2.7.2 /usr/bin/composer /usr/bin/composer
 
-# Copy existing application directory contents
+# Copie o conteúdo da aplicação
 COPY . /var/www
 
-# Copy existing application directory permissions
-COPY --chown=www-data:www-data . /var/www
+# Ajuste permissões
+RUN chown -R www-data:www-data /var/www
 
-# Change current user to www
-USER www-data
-
-# Expose port 9000 and start php-fpm server
+# Exponha a porta 9000 e inicie o servidor PHP-FPM
 EXPOSE 9000
 CMD ["php-fpm"]
